@@ -1,0 +1,16 @@
+{
+    "name": "laurentiu-dancu/lms",
+    "description": "Design a Library Management System",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": "^7.4"
+    },
+    "authors": [
+        {
+            "name": "Laurentiu Dancu",
+            "email": "laurentiu.dancu@pitechplus.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
