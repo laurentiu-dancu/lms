@@ -1,0 +1,95 @@
+@startuml
+
+
+
+class Barcode {
+    #string code
+    +string getCode()
+}
+
+interface ScannableInterface {
+    Barcode : getBarcode()
+}
+
+package book {
+    class Book {
+        #Barcode barcode
+        #string title
+        #string author
+        #string category
+        #DateTimeInterface publishDate
+        #BookItem[] items
+    }
+
+    class BookItem implements ScannableInterface {
+        #string uuid
+        #int rackNumber
+        #Book book
+        #Librarian lender
+        #?LibraryMember lendee
+        #?LibraryMember reservee
+        #?DateTimeInterface dueDate
+    }
+}
+
+package user {
+    class Librarian extends LibraryMember {
+
+    }
+
+    class LibraryMember implements ScannableInterface {
+    }
+}
+
+package search {
+    interface ParameterInterface {
+    }
+
+    class PublicationDateRangeParameter implements ParameterInterface {
+        #DateTimeInterface start
+        #DateTimeInterface end
+    }
+
+    abstract class ScalarStringParameter implements ParameterInterface {
+        #string term
+    }
+
+    class AuthorParameter extends ScalarStringParameter
+    class CategoryParameter extends ScalarStringParameter
+    class TitleParameter extends ScalarStringParameter
+
+    interface ParameterList {
+        add(ParameterInterface parameter)
+    }
+
+}
+package system {
+    interface Search {
+        Book[] search(LibraryMember, ParameterList parameter)
+    }
+    interface Lend {
+        lend()
+        renew()
+        return()
+    }
+    interface Fine {
+        payFine()
+    }
+
+    interface Scan {
+        scan(ScannableInterface scannable)
+    }
+
+}
+
+'Librarian - BookItem : lends >
+'LibraryMember - BookItem : is lended >
+'Book o-- BookItem
+ParameterList o-- ParameterInterface
+'SearchSystemInterface - ParameterList : uses >
+
+Search - ParameterList : uses >
+
+LibraryMember o-- Barcode
+Book o-- Barcode
+@enduml
